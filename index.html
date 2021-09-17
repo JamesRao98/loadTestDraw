@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <script src="app.js"></script>
+        <title>Load Test Draw</title>
+    </head>
+    <body>
+        <h1>Load Test Draw</h1>
+            
+        <div class="grid-container">
+            <div class="canvas"><canvas id="canvas"></canvas></div>
+            <div class="stages">
+                <textarea id="stages"></textarea>
+                <button onclick="app.stages.select();document.execCommand('copy')">Copy</button>
+            </div>
+            
+            
+            <div class="form">
+                <table>
+                    <tr>
+                        <td><label for="max_time"> Total Duration:</label></td>
+                        <td><input type="number" placeholder="total duration" id="max_time" value="60"></td>
+                        <td>
+                            <select value="s" id="time_unit">
+                                <option value="s">seconds</option>
+                                <option value="m">minutes</option>
+                                <option value="h">hours</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="min_req">Minimum Requests:</label></td>
+                        <td colspan="2"><input type="number" placeholder="min requests" id="min_req" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="max_req">Maximum Requests:</label></td>
+                        <td colspan="2"><input type="number" placeholder="max requests" id="max_req" value="100"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <script>
+            var el_ids = {
+                canvas: "canvas",
+                stages: "stages",
+                max_time: "max_time",
+                time_unit: "time_unit",
+                min_req: "min_req",
+                max_req: "max_req"
+            };
+
+            var app = new App(el_ids, 10);
+
+            app.canvas.width = 0.5 * window.innerWidth;
+            app.canvas.height = 0.5 * window.innerHeight;
+
+            window.onresize = function() {
+                app.canvas.width = 0.5 * window.innerWidth;
+                app.canvas.height = 0.5 * window.innerHeight;
+            }
+
+            app.canvas.onmousedown = function() {app.mouseDown()};
+            app.canvas.onmousemove = function(event) {app.mouseMove(event)};
+            app.canvas.onmouseup = function() {app.mouseUp()};
+
+            app.max_time.onchange = function() {app.genStages()};
+            app.min_req.onchange = function() {app.genStages()};
+            app.max_req.onchange = function() {app.genStages()};
+            app.time_unit.onchange = function() {app.genStages()};
+        </script>
+    </body>
+</html>
